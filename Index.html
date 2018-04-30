@@ -1,0 +1,150 @@
+<!-- Latest compiled and minified CSS -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Dev Test</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+	
+	
+	<script>
+	  $( function() {
+		$( "#datetimepicker1" ).datepicker({ minDate: 0 });
+	  } );
+    </script>
+	
+	<style media="screen" type="text/css">	
+	.day.grey {
+		background-color: grey !important;
+	}
+	
+	.day.green {
+		background-color: green !important;
+	}
+	
+	.day.yellow {
+		background-color: yellow !important;
+	}
+	
+	.day.orange {
+		background-color: orange !important;
+	}
+	</style>
+</head>
+
+<body>
+	<form id="devForm" class="form-horizontal">
+	<fieldset>
+
+	<!-- Form Name -->
+	<legend>Exercise UI Developer</legend>
+
+	<!-- Text input-->
+	<div class="form-group">
+	  <label class="col-md-4 control-label" for="textinput">Start Date</label>  
+	  <div class="col-md-4">
+		<div class="input-group date" id="datetimepicker1">
+			<input type='text' name="fechaIni" class="form-control" placeholder="MM/DD/YYYY" />
+			<span class="input-group-addon">
+				<span class="glyphicon glyphicon-calendar"></span>
+			</span>
+		</div>
+	  </div>
+	</div>
+
+	<!-- Text input-->
+	<div class="form-group">
+	  <label class="col-md-4 control-label" for="textinput">Number of Days</label>  
+	  <div class="col-md-4 teste">
+		<input id="numberDays" name="numberDays" class="form-control input-md" type="text" > 
+	  </div>
+	</div>
+
+	<!-- Text input-->
+	<div class="form-group">
+	  <label class="col-md-4 control-label" for="textinput">Country Code</label>  
+	  <div class="col-md-4">
+		<input id="textinput" name="textinput" class="form-control input-md" type="text"> 
+	  </div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-2 col-md-offset-5">
+			<button type="button" class="btn btn-success" id="btnGenerate">Generate Calendar</button>
+		</div>
+	</div>
+
+	</fieldset>
+	</form>
+	<br /><br />
+	<div class="form-group">
+		<div class="row">
+			<div class="col-md-8 col-md-offset-5">
+				<div id="datetimepicker12"></div>
+			</div>
+		</div>
+	</div>
+	
+	<script type="text/javascript">
+		var today = new Date();
+		var holiday = ["1-1-2018", "1-15-2018","2-19-2018", "5-28-2018","7-4-2018", "9-3-2018","10-8-2018", "11-12-2018","11-22-2018", "12-25-2018"];
+		$(document).ready(function(){
+		
+		});
+		
+		function formatDate(date) {
+			var day = date.getDate();
+			var month = date.getMonth()+1;
+			var year = date.getFullYear();
+
+			return month + '-' + day + '-' + year;
+		}
+       
+		
+		$('#btnGenerate').click(function(){
+			if(!$('#datetimepicker1').datepicker('getDate')){
+				alert('Please fill the start date');
+				return;
+			}
+			if(!$('#numberDays').val()){
+				alert('Please fill the number of days');
+				return;
+			}
+			
+			var daysToAdd = parseInt($('#numberDays').val());
+			if(isNaN(daysToAdd)){
+				alert('Please provide a valid number for number of days');
+				return;
+			}
+			
+			var fechaIni = $('#datetimepicker1').datepicker('getDate');
+			var fechaFin = new Date(fechaIni);
+			fechaFin.setDate(fechaFin.getDate() + daysToAdd);
+			$('#datetimepicker12').datepicker({
+                inline: true,
+				startDate: fechaIni,
+				endDate: fechaFin,
+				beforeShowDay: function (date) {
+					var datestring = formatDate(date);
+					if (date < fechaIni || date > fechaFin)
+						return "grey";
+					else if (holiday.indexOf(datestring) != -1)
+                        return "orange";
+					else if (date.getDay() == 0 || date.getDay() == 6)
+						return "yellow";
+					else 
+						return "green";
+				}
+            });
+
+		});
+    </script>
+</body>
+</html>
